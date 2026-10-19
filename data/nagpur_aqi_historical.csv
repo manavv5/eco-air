@@ -1,0 +1,52 @@
+station,location,type,program,frequency,record_no,date,so2_ug_m3,nox_ug_m3,rspm_ug_m3,spm_ug_m3,co2_ug_m3,aqi
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,1,2026-02-02,5,11,156.0,,,137
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,2,2026-02-03,10,38,192.0,,,161
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,3,2026-02-04,14,44,174.0,,,149
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,4,2026-02-05,10,41,165.0,,,143
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,5,2026-02-06,7,33,187.0,,,158
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,6,2026-02-07,11,30,175.0,,,150
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,7,2026-02-09,6,18,145.0,,,130
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,8,2026-02-10,9,21,185.0,,,157
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,9,2026-02-11,6,22,180.0,,,153
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,10,2026-02-12,7,36,188.0,,,159
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,11,2026-02-13,11,36,216.0,,,177
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,12,2026-02-14,9,30,221.0,,,181
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,13,2026-02-16,8,29,222.0,,,181
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,14,2026-02-17,10,33,209.0,,,173
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,15,2026-02-18,7,26,184.0,,,156
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,16,2026-02-19,4,25,187.0,,,158
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,17,2026-02-20,8,23,184.0,,,156
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,18,2026-02-21,8,22,196.0,,,164
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,19,2026-02-23,4,22,86.0,,,86
+Civil lines Nagpur,RO Office Nagpur Premises,Residential,SAMP,Six days in a week,20,2026-02-24,4,9,92.0,,,92
+Hingna Road,MIDC office Hingna Road Nagpur,Industrial,NAMP,Two days in a week,1,2026-02-02,14,38,168.0,347.0,,145
+Hingna Road,MIDC office Hingna Road Nagpur,Industrial,NAMP,Two days in a week,2,2026-02-05,12,55,157.0,295.0,,138
+Hingna Road,MIDC office Hingna Road Nagpur,Industrial,NAMP,Two days in a week,3,2026-02-09,5,44,220.0,336.0,,180
+Hingna Road,MIDC office Hingna Road Nagpur,Industrial,NAMP,Two days in a week,4,2026-02-12,7,38,172.0,352.0,,148
+Hingna Road,MIDC office Hingna Road Nagpur,Industrial,NAMP,Two days in a week,5,2026-02-16,8,46,202.0,363.0,,168
+Hingna Road,MIDC office Hingna Road Nagpur,Industrial,NAMP,Two days in a week,6,2026-02-19,4,32,152.0,266.0,,135
+Hingna Road,MIDC office Hingna Road Nagpur,Industrial,NAMP,Two days in a week,7,2026-02-23,4,37,210.0,357.0,,173
+Hingna Road,MIDC office Hingna Road Nagpur,Industrial,NAMP,Two days in a week,8,2026-02-26,9,29,145.0,285.0,,130
+Hingna Road,MIDC office Hingna Road Nagpur,Industrial,NAMP,Two days in a week,9,2026-03-02,7,25,223.0,366.0,,182
+Laxminarayan Institute of Technology,Amravati Road,Residential,CAAQMS,Continuous Monitoring,1,2026-02-01,26,22,109.0,0.0,,106
+Laxminarayan Institute of Technology,Amravati Road,Residential,CAAQMS,Continuous Monitoring,2,2026-02-02,18,25,143.0,0.0,,129
+Laxminarayan Institute of Technology,Amravati Road,Residential,CAAQMS,Continuous Monitoring,3,2026-02-03,18,25,169.0,0.0,,146
+Laxminarayan Institute of Technology,Amravati Road,Residential,CAAQMS,Continuous Monitoring,4,2026-02-04,15,23,155.0,0.0,,137
+Laxminarayan Institute of Technology,Amravati Road,Residential,CAAQMS,Continuous Monitoring,5,2026-02-05,14,23,174.0,0.0,,149
+Sadar,Govt Polytechnic College,Rural & other Areas,NAMP,Two days in a week,1,2026-02-04,16,54,121.0,254.0,,114
+Sadar,Govt Polytechnic College,Rural & other Areas,NAMP,Two days in a week,2,2026-02-06,17,49,107.0,177.0,,105
+Sadar,Govt Polytechnic College,Rural & other Areas,NAMP,Two days in a week,3,2026-02-11,4,26,117.0,288.0,,111
+Sadar,Govt Polytechnic College,Rural & other Areas,NAMP,Two days in a week,4,2026-02-13,12,37,159.0,299.0,,139
+Town Hall premises Mahal,Town Hall premises,Residential,CAAQMS,Continuous Monitoring,1,2026-02-01,41,36,149.0,0.0,,133
+Town Hall premises Mahal,Town Hall premises,Residential,CAAQMS,Continuous Monitoring,2,2026-02-02,44,34,150.0,0.0,,133
+Town Hall premises Mahal,Town Hall premises,Residential,CAAQMS,Continuous Monitoring,3,2026-02-03,54,38,172.0,0.0,,148
+Town Hall premises Mahal,Town Hall premises,Residential,CAAQMS,Continuous Monitoring,4,2026-02-04,38,37,142.0,0.0,,128
+Town Hall premises Mahal,Town Hall premises,Residential,CAAQMS,Continuous Monitoring,5,2026-02-05,37,38,161.0,0.0,,141
+Visvesvaraya National Institute of Technology,VNIT Nagpur,Residential,CAAQMS,Continuous Monitoring,1,2026-02-01,23,22,93.0,0.0,,93
+Visvesvaraya National Institute of Technology,VNIT Nagpur,Residential,CAAQMS,Continuous Monitoring,2,2026-02-02,19,30,112.0,0.0,,108
+Visvesvaraya National Institute of Technology,VNIT Nagpur,Residential,CAAQMS,Continuous Monitoring,3,2026-02-03,22,32,135.0,0.0,,123
+Visvesvaraya National Institute of Technology,VNIT Nagpur,Residential,CAAQMS,Continuous Monitoring,4,2026-02-04,20,27,126.0,0.0,,117
+Visvesvaraya National Institute of Technology,VNIT Nagpur,Residential,CAAQMS,Continuous Monitoring,5,2026-02-05,24,29,137.0,0.0,,125
+MJP Water Supply station,Wadi,Residential,SAMP,Two times in a week,1,2026-02-02,9,59,130.0,174.0,,120
+MJP Water Supply station,Wadi,Residential,SAMP,Two times in a week,2,2026-02-04,10,55,113.0,160.0,,109
+MJP Water Supply station,Wadi,Residential,SAMP,Two times in a week,3,2026-02-09,8,53,146.0,197.0,,131

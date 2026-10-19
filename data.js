@@ -1,82 +1,264 @@
 /**
- * EcoAir Data Engine
- * Real-time API coordinates, WHO clinical benchmarks, cited medical criteria,
- * multilingual translations, and DIY hardware protocols.
+ * EcoAir Data Engine v3.0 (Urban Air Intelligence & CAAQMS Integration)
+ * SEE -> UNDERSTAND -> PREDICT -> ACT -> MEASURE
  */
 
 // City Coordinates for Live Open-Meteo Air Quality API
 const CITY_COORDINATES = {
+  "Nagpur (CAAQMS Network)": { lat: 21.1458, lon: 79.0882, country: "India" },
   "San Francisco": { lat: 37.7749, lon: -122.4194, country: "USA" },
   "London": { lat: 51.5074, lon: -0.1278, country: "UK" },
   "New York": { lat: 40.7128, lon: -74.0060, country: "USA" },
   "New Delhi": { lat: 28.6139, lon: 77.2090, country: "India" },
   "Tokyo": { lat: 35.6762, lon: 139.6503, country: "Japan" },
   "Paris": { lat: 48.8566, lon: 2.3522, country: "France" },
-  "Ahmedabad": { lat: 23.0225, lon: 72.5714, country: "India" },
-  "Mumbai": { lat: 19.0760, lon: 72.8777, country: "India" }
+  "Ahmedabad": { lat: 23.0225, lon: 72.5714, country: "India" }
 };
+
+// Real CAAQMS Network Stations (Nagpur Network Ground Truth)
+const CAAQMS_STATIONS = [
+  {
+    name: "Civil Lines",
+    location: "RO Office Nagpur Premises",
+    type: "Residential",
+    lat: 21.1558,
+    lon: 79.0760,
+    aqi: 137,
+    rspm: 156.0,
+    nox: 11.0,
+    so2: 5.0,
+    status: "Moderate",
+    dominant: "PM10 / Dust"
+  },
+  {
+    name: "Central Junction Ring Road",
+    location: "Major Arterial Highway Intersection",
+    type: "Traffic Hotspot",
+    lat: 21.1400,
+    lon: 79.0850,
+    aqi: 148,
+    rspm: 168.0,
+    nox: 67.0,
+    so2: 12.0,
+    status: "Unhealthy for Sensitive",
+    dominant: "NO2 / Diesel Exhaust",
+    isHotspot: true,
+    hotspotReason: "Vehicular Stop-and-Go Congestion (48.2% contribution)"
+  },
+  {
+    name: "Hingna Road MIDC",
+    location: "MIDC Industrial Complex",
+    type: "Industrial",
+    lat: 21.1020,
+    lon: 78.9850,
+    aqi: 180,
+    rspm: 220.0,
+    nox: 44.0,
+    so2: 14.0,
+    status: "Unhealthy",
+    dominant: "SO2 & Coarse Dust",
+    isHotspot: true,
+    hotspotReason: "Boiler emissions & heavy freight transport"
+  },
+  {
+    name: "VNIT Campus",
+    location: "Visvesvaraya National Institute of Tech",
+    type: "Educational / Green Buffer",
+    lat: 21.1250,
+    lon: 79.0510,
+    aqi: 93,
+    rspm: 93.0,
+    nox: 22.0,
+    so2: 23.0,
+    status: "Moderate",
+    dominant: "Vegetative Buffered PM2.5"
+  },
+  {
+    name: "Town Hall Mahal",
+    location: "Old City High Density Commercial Core",
+    type: "Commercial / High Density",
+    lat: 21.1440,
+    lon: 79.1120,
+    aqi: 148,
+    rspm: 172.0,
+    nox: 38.0,
+    so2: 54.0,
+    status: "Unhealthy for Sensitive",
+    dominant: "Vehicular & Commercial Combustion"
+  },
+  {
+    name: "Laxminarayan Institute (LIT)",
+    location: "Amravati Road Arterial",
+    type: "Residential / Transit",
+    lat: 21.1480,
+    lon: 79.0430,
+    aqi: 129,
+    rspm: 143.0,
+    nox: 25.0,
+    so2: 18.0,
+    status: "Moderate",
+    dominant: "Highway Exhaust"
+  }
+];
 
 // Standard US EPA AQI Categories (Corrected Scale)
 const AQI_SCALE = [
-  { min: 0, max: 50, label: "Good", color: "#10b981", class: "theme-good", textClass: "text-emerald-400", bgClass: "bg-emerald-500/20" },
-  { min: 51, max: 100, label: "Moderate", color: "#f59e0b", class: "theme-moderate", textClass: "text-amber-400", bgClass: "bg-amber-500/20" },
-  { min: 101, max: 150, label: "Unhealthy for Sensitive Groups", color: "#f97316", class: "theme-sensitive", textClass: "text-orange-400", bgClass: "bg-orange-500/20" },
-  { min: 151, max: 200, label: "Unhealthy", color: "#ef4444", class: "theme-unhealthy", textClass: "text-red-400", bgClass: "bg-red-500/20" },
-  { min: 201, max: 300, label: "Very Unhealthy", color: "#a855f7", class: "theme-very-unhealthy", textClass: "text-purple-400", bgClass: "bg-purple-500/20" },
-  { min: 301, max: 500, label: "Hazardous", color: "#881337", class: "theme-hazardous", textClass: "text-rose-500", bgClass: "bg-rose-950/40" }
+  { min: 0, max: 50, label: "Good", color: "#10b981", class: "theme-good", textClass: "text-emerald-500", bgClass: "bg-emerald-500/20" },
+  { min: 51, max: 100, label: "Moderate", color: "#f59e0b", class: "theme-moderate", textClass: "text-amber-500", bgClass: "bg-amber-500/20" },
+  { min: 101, max: 150, label: "Unhealthy for Sensitive Groups", color: "#f97316", class: "theme-sensitive", textClass: "text-orange-500", bgClass: "bg-orange-500/20" },
+  { min: 151, max: 200, label: "Unhealthy", color: "#ef4444", class: "theme-unhealthy", textClass: "text-red-500", bgClass: "bg-red-500/20" },
+  { min: 201, max: 300, label: "Very Unhealthy", color: "#a855f7", class: "theme-very-unhealthy", textClass: "text-purple-500", bgClass: "bg-purple-500/20" },
+  { min: 301, max: 500, label: "Hazardous", color: "#881337", class: "theme-hazardous", textClass: "text-rose-600", bgClass: "bg-rose-950/40" }
 ];
 
-// Offline Fallback Presets
-const FALLBACK_PRESETS = {
-  "San Francisco": {
-    country: "USA",
-    aqi: 38,
-    category: "Good",
-    temp: "17°C",
-    humidity: "68%",
-    wind: "14 km/h WSW",
-    dominantPollutant: "PM2.5",
-    pollutants: {
-      pm25: { value: 8.5, unit: "µg/m³", whoLimit: 15, name: "PM 2.5", desc: "Fine particulate matter capable of penetrating deep into alveolar sacs." },
-      pm10: { value: 16.0, unit: "µg/m³", whoLimit: 45, name: "PM 10", desc: "Inhalable coarse particles like dust, silica, and pollen." },
-      no2: { value: 12.0, unit: "ppb", whoLimit: 25, name: "Nitrogen Dioxide", desc: "Emitted from vehicle combustion; inflames bronchial lining." },
-      o3: { value: 24.5, unit: "ppb", whoLimit: 50, name: "Ground Ozone", desc: "Photochemical oxidant formed under intense solar UV radiation." },
-      co: { value: 0.3, unit: "ppm", whoLimit: 4.0, name: "Carbon Monoxide", desc: "Combustion gas that binds to hemoglobin, impeding oxygen transfer." }
-    }
-  },
-  "New Delhi": {
-    country: "India",
-    aqi: 265,
-    category: "Very Unhealthy",
-    temp: "29°C",
-    humidity: "45%",
-    wind: "6 km/h Calm",
-    dominantPollutant: "PM2.5",
-    pollutants: {
-      pm25: { value: 185.0, unit: "µg/m³", whoLimit: 15, name: "PM 2.5", desc: "Fine particulate matter capable of penetrating deep into alveolar sacs." },
-      pm10: { value: 290.0, unit: "µg/m³", whoLimit: 45, name: "PM 10", desc: "Inhalable coarse particles like dust, silica, and pollen." },
-      no2: { value: 48.0, unit: "ppb", whoLimit: 25, name: "Nitrogen Dioxide", desc: "Emitted from vehicle combustion; inflames bronchial lining." },
-      o3: { value: 42.0, unit: "ppb", whoLimit: 50, name: "Ground Ozone", desc: "Photochemical oxidant formed under intense solar UV radiation." },
-      co: { value: 2.8, unit: "ppm", whoLimit: 4.0, name: "Carbon Monoxide", desc: "Combustion gas that binds to hemoglobin, impeding oxygen transfer." }
-    }
+// Explainable AI: Source Attribution Breakdown Model
+const SOURCE_ATTRIBUTION = {
+  overall: [
+    { source: "Vehicular Traffic", percent: 48, color: "#ef4444", icon: "🚗", desc: "Idling, tailpipe emissions, diesel particulate, brake wear" },
+    { source: "Construction & Road Dust", percent: 21, color: "#f59e0b", icon: "🏗️", desc: "Unpaved road dust, earth movement, silica particles" },
+    { source: "Industrial & Manufacturing", percent: 17, color: "#8b5cf6", icon: "🏭", desc: "Boiler exhausts, point-source emissions, smelting" },
+    { source: "Weather Inversion & Stagnation", percent: 9, color: "#06b6d4", icon: "🌫️", desc: "Low planetary boundary layer, calm winds trapping pollutants" },
+    { source: "Biomass & Waste Burning", percent: 5, color: "#ec4899", icon: "🔥", desc: "Local refuse combustion and domestic solid fuel" }
+  ],
+  stoichiometricRatios: {
+    no2_co: "0.22 (High diesel combustion signature)",
+    so2_pm25: "0.14 (Moderate industrial sulfur signature)",
+    pm25_pm10: "0.58 (Secondary aerosol & combustion dominance)"
   }
 };
 
-// Cited Clinical Vulnerability Personas
+// Multi-Horizon Predictive Forecast Engine
+const FORECAST_HORIZONS = [
+  { horizon: "Now", aqi: 148, change: "0%", status: "High", explanation: "Peak evening commuter rush starting." },
+  { horizon: "+15 Min", aqi: 155, change: "+5%", status: "Unhealthy", explanation: "Congestion intensifying at ring road bottlenecks." },
+  { horizon: "+30 Min", aqi: 164, change: "+11%", status: "Unhealthy", explanation: "Wind speed dropping to 3 km/h; dispersion decelerates." },
+  { horizon: "+1 Hour", aqi: 171, change: "+16%", status: "Unhealthy", explanation: "Planetary boundary layer compressing; nocturnal inversion peak." },
+  { horizon: "+2 Hours", aqi: 158, change: "+7%", status: "Unhealthy", explanation: "Traffic density subsiding after evening peak." },
+  { horizon: "+4 Hours", aqi: 132, change: "-11%", status: "Moderate", explanation: "Cooling ambient temperatures and midnight traffic cessation." },
+  { horizon: "+6 Hours", aqi: 110, change: "-26%", status: "Moderate", explanation: "Light night breeze clearing surface layer." }
+];
+
+// Decision Engine: Action & Intervention Catalog
+const INTERVENTIONS_CATALOG = [
+  {
+    id: "traffic-opt",
+    category: "Traffic Optimization",
+    title: "Adaptive Traffic Signal Synchronization",
+    target: "Central Junction Ring Road",
+    expectedImpact: "↓ 12-16% PM2.5 & NO2 Exposure",
+    affectedPop: "18,500 residents",
+    feasibility: "Immediate (Software actuation)",
+    cost: "Low",
+    active: true
+  },
+  {
+    id: "freight-bypass",
+    category: "Traffic Routing",
+    title: "Heavy Commercial Vehicle Outer Bypass Divert",
+    target: "Inner Ring Road Corridor",
+    expectedImpact: "↓ 18-22% Diesel Black Carbon",
+    affectedPop: "34,000 residents",
+    feasibility: "Medium (Police traffic routing)",
+    cost: "Low",
+    active: false
+  },
+  {
+    id: "dust-suppress",
+    category: "Construction & Dust",
+    title: "Atomized Water Mist Cannon Spraying",
+    target: "Hingna Road & Metro Construction Corridor",
+    expectedImpact: "↓ 25-30% Coarse PM10 Settling",
+    affectedPop: "12,000 residents",
+    feasibility: "Immediate",
+    cost: "Medium",
+    active: false
+  },
+  {
+    id: "green-buffer",
+    category: "Urban Planning",
+    title: "Vegetative Foliage Buffer Development",
+    target: "School & Hospital Perimeters (VNIT & Sadar)",
+    expectedImpact: "↓ 15-20% Localized Barrier Infiltration",
+    affectedPop: "8,500 students & patients",
+    feasibility: "Long-term Infrastructure",
+    cost: "Moderate",
+    active: false
+  }
+];
+
+// 9-Step Walkthrough Demonstration Story
+const DEMO_TOUR_STEPS = [
+  {
+    step: 1,
+    title: "1. SEE: Baseline Urban Air Quality",
+    desc: "ECOAIR monitors baseline city air. City-wide AQI is 82 (Moderate). Normal background levels.",
+    action: { aqi: 82, category: "Moderate", hotspot: false }
+  },
+  {
+    step: 2,
+    title: "2. SEE: GIS Hotspot Detected",
+    desc: "Spatial clustering flags an emerging emission plume at Central Junction Ring Road.",
+    action: { aqi: 124, category: "Unhealthy for Sensitive Groups", hotspot: true, hotspotName: "Central Junction" }
+  },
+  {
+    step: 3,
+    title: "3. UNDERSTAND: Inspect Hotspot Telemetry",
+    desc: "Sensors detect AQI 148, PM2.5 82 µg/m³, NO2 67 µg/m³. Nitrogen dioxide spike indicates active combustion.",
+    action: { aqi: 148, category: "Unhealthy for Sensitive Groups", pm25: 82, no2: 67 }
+  },
+  {
+    step: 4,
+    title: "4. UNDERSTAND: AI Source Attribution",
+    desc: "The Explainable AI model attributes 48.2% to vehicular congestion and 21.0% to construction dust.",
+    action: { showAttribution: true }
+  },
+  {
+    step: 5,
+    title: "5. PREDICT: Multi-Horizon Forecasting",
+    desc: "Atmospheric AI forecasts pollution will climb to 171 (Unhealthy) within 60 minutes if left unmitigated.",
+    action: { showForecast: true, futureAqi: 171 }
+  },
+  {
+    step: 6,
+    title: "6. ACT: Decision Engine Interventions",
+    desc: "Action Center recommends adaptive traffic signal retiming and heavy commercial vehicle bypass divert.",
+    action: { showInterventions: true }
+  },
+  {
+    step: 7,
+    title: "7. ACT: ECO Simulator — What-If Sandbox",
+    desc: "We simulate policy levers: -20% traffic congestion, +15% green buffer filtration.",
+    action: { showSimulator: true, trafficCurtailed: 20 }
+  },
+  {
+    step: 8,
+    title: "8. MEASURE: Counterfactual Outcome",
+    desc: "Without intervention: AQI reaches 171. With ECOAIR intervention: AQI drops to 143 (↓ 28 AQI points).",
+    action: { beforeAqi: 171, afterAqi: 143 }
+  },
+  {
+    step: 9,
+    title: "9. MEASURE: Quantified Environmental Impact",
+    desc: "Impact measured: 16% PM2.5 exposure reduction, ~18,500 population protected, 184 kg/day toxic mass avoided.",
+    action: { showImpact: true }
+  }
+];
+
+// Health Vulnerability Personas
 const PROFILES = {
   asthma: {
     id: "asthma",
     name: "Asthma / Respiratory Sensitive",
     tagline: "Heightened bronchial sensitivity to micro-particulates & NO2",
     description: "Prioritizes airway protection, timely bronchodilator reminders, and strictly filtered micro-climates.",
-    citation: "Source: Global Initiative for Asthma (GINA) 2023 Guidelines & WHO Global Air Quality Guidelines (2021)."
+    citation: "Source: Global Initiative for Asthma (GINA 2023) & WHO Air Quality Guidelines (2021)."
   },
   athlete: {
     id: "athlete",
     name: "Outdoor Athlete / Runner",
     tagline: "Elevated minute-ventilation & deep aerobic particulate intake",
     description: "During strenuous aerobic exercise, pulmonary ventilation can increase up to 8-10 fold, multiplying inhaled particulate mass.",
-    citation: "Source: American Thoracic Society (ATS) / Carlisle & Sharp, Sports Medicine 2001 on Exercise-Induced Pulmonary Ventilation."
+    citation: "Source: American Thoracic Society (ATS) / Carlisle & Sharp, Sports Medicine 2001."
   },
   caregiver: {
     id: "caregiver",
@@ -94,7 +276,7 @@ const PROFILES = {
   }
 };
 
-// Interactive Simulations
+// Simulation Scenarios
 const SIMULATION_SCENARIOS = {
   wildfire: {
     id: "wildfire",
@@ -146,11 +328,11 @@ const SIMULATION_SCENARIOS = {
   }
 };
 
-// Multilingual Dictionary (English, Hindi, Gujarati)
+// Multilingual Dictionary
 const TRANSLATIONS = {
   en: {
-    brandSubtitle: "Intelligent Clean-Air & Health Action Companion",
-    liveTelemetry: "Live Satellite & Station Telemetry",
+    brandSubtitle: "AI Urban Air Intelligence Platform • SEE → UNDERSTAND → PREDICT → ACT → MEASURE",
+    liveTelemetry: "Live Satellite, Station & CAAQMS Telemetry",
     personalProfile: "Personal Health Vulnerability Profile",
     aqiLabel: "Air Quality Index",
     dominantLabel: "Dominant",
@@ -170,8 +352,8 @@ const TRANSLATIONS = {
     streakLabel: "Low-Exposure Streak"
   },
   hi: {
-    brandSubtitle: "बुद्धिमान स्वच्छ-वायु और स्वास्थ्य साथी",
-    liveTelemetry: "लाइव उपग्रह और स्टेशन डेटा",
+    brandSubtitle: "एआई शहरी वायु गुणवत्ता इंटेलिजेंस प्लेटफॉर्म • SEE → UNDERSTAND → PREDICT → ACT → MEASURE",
+    liveTelemetry: "लाइव उपग्रह, स्टेशन और CAAQMS डेटा",
     personalProfile: "व्यक्तिगत स्वास्थ्य संवेदनशीलता प्रोफ़ाइल",
     aqiLabel: "वायु गुणवत्ता सूचकांक (AQI)",
     dominantLabel: "प्रमुख प्रदूषक",
@@ -191,8 +373,8 @@ const TRANSLATIONS = {
     streakLabel: "कम प्रदूषण स्ट्रीक"
   },
   gu: {
-    brandSubtitle: "બુદ્ધિશાળી સ્વચ્છ-હવા અને સ્વાસ્થ્ય સાથી",
-    liveTelemetry: "લાઈવ સેટેલાઇટ અને સ્ટેશન ડેટા",
+    brandSubtitle: "એઆઈ શહેરી વાયુ ગુણવત્તા ઇન્ટેલિજન્સ પ્લેટફોર્મ • SEE → UNDERSTAND → PREDICT → ACT → MEASURE",
+    liveTelemetry: "લાઈવ સેટેલાઇટ, સ્ટેશન અને CAAQMS ડેટા",
     personalProfile: "વ્યક્તિગત આરોગ્ય સંવેદનશીલતા પ્રોફાઇલ",
     aqiLabel: "હવાની ગુણવત્તા સૂચકાંક (AQI)",
     dominantLabel: "મુખ્ય પ્રદૂષક",
