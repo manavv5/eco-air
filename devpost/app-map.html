@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoAir — App Map & Architectural Code Tour</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
+    .code-font { font-family: 'JetBrains Mono', monospace; }
+    .glass { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+  </style>
+</head>
+<body class="p-6 md:p-12 max-w-5xl mx-auto space-y-10">
+
+  <!-- Header -->
+  <header class="border-b border-white/10 pb-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">
+          <span>EcoAir</span>
+          <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-mono border border-emerald-500/30">APP MAP</span>
+        </h1>
+        <p class="text-slate-400 text-sm mt-1">Devpost Learn Curriculum Companion • Architectural Blueprint & Code Tour</p>
+      </div>
+      <a href="../index.html" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-emerald-500/20">
+        Launch App ↗
+      </a>
+    </div>
+  </header>
+
+  <!-- Section 1: System Data Flow -->
+  <section class="space-y-4">
+    <h2 class="text-xl font-bold text-slate-100 flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+      <span>1. Reactive System Data Flow</span>
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="glass p-5 rounded-2xl border-t-2 border-t-emerald-400">
+        <span class="text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-bold">Input Layer</span>
+        <h3 class="text-base font-bold text-white mt-1">Telemetry Ingestion</h3>
+        <p class="text-xs text-slate-400 mt-2">
+          Loads curated presets or synthetic simulation packets (AQI, PM2.5, PM10, NO2, O3, CO) from <code class="code-font text-emerald-300">data.js</code>.
+        </p>
+      </div>
+
+      <div class="glass p-5 rounded-2xl border-t-2 border-t-cyan-400">
+        <span class="text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-bold">Intelligence Layer</span>
+        <h3 class="text-base font-bold text-white mt-1">Vulnerability Engine</h3>
+        <p class="text-xs text-slate-400 mt-2">
+          Evaluates particulate thresholds against active persona profile (Asthma, Athlete, Caregiver, Commuter) in <code class="code-font text-cyan-300">app.js</code>.
+        </p>
+      </div>
+
+      <div class="glass p-5 rounded-2xl border-t-2 border-t-amber-400">
+        <span class="text-[11px] font-mono uppercase tracking-wider text-amber-400 font-bold">Action Layer</span>
+        <h3 class="text-base font-bold text-white mt-1">Mitigation Advisor</h3>
+        <p class="text-xs text-slate-400 mt-2">
+          Calculates route exposure deltas (-38% particulate load) and window ventilation intervals based on ambient air severity.
+        </p>
+      </div>
+
+      <div class="glass p-5 rounded-2xl border-t-2 border-t-purple-400">
+        <span class="text-[11px] font-mono uppercase tracking-wider text-purple-400 font-bold">Display Layer</span>
+        <h3 class="text-base font-bold text-white mt-1">Atmospheric UI</h3>
+        <p class="text-xs text-slate-400 mt-2">
+          Dynamically shifts ambient page gradients and SVG radial stroke offsets in <code class="code-font text-purple-300">styles.css</code>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Code Structure & Tour -->
+  <section class="space-y-4">
+    <h2 class="text-xl font-bold text-slate-100 flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+      <span>2. Codebase Structure & Tour</span>
+    </h2>
+
+    <div class="glass rounded-2xl p-6 space-y-4 font-mono text-xs">
+      <div class="border-b border-white/10 pb-3 flex justify-between text-slate-400">
+        <span>File</span>
+        <span>Key Functions & Responsibilities</span>
+      </div>
+
+      <div class="flex flex-col md:flex-row justify-between py-2 border-b border-white/5 gap-2">
+        <span class="text-emerald-400 font-bold">data.js</span>
+        <span class="text-slate-300 font-sans text-xs">Environmental benchmark presets (SF, NYC, London, Delhi, Tokyo), WHO clinical guidelines, 4 vulnerability personas, and 3 simulation scenarios.</span>
+      </div>
+
+      <div class="flex flex-col md:flex-row justify-between py-2 border-b border-white/5 gap-2">
+        <span class="text-cyan-400 font-bold">app.js</span>
+        <span class="text-slate-300 font-sans text-xs"><code class="text-cyan-300">applyTelemetry()</code>, <code class="text-cyan-300">renderHeroGauge()</code>, <code class="text-cyan-300">renderHealthAdvisories()</code>, <code class="text-cyan-300">renderRouteAdvisor()</code>, and simulation event dispatcher.</span>
+      </div>
+
+      <div class="flex flex-col md:flex-row justify-between py-2 border-b border-white/5 gap-2">
+        <span class="text-amber-400 font-bold">styles.css</span>
+        <span class="text-slate-300 font-sans text-xs">Atmospheric theme variables (<code class="text-amber-300">theme-good</code>, <code class="text-amber-300">theme-moderate</code>, <code class="text-amber-300">theme-hazardous</code>), glassmorphism, and radial SVG progress stroke animation.</span>
+      </div>
+
+      <div class="flex flex-col md:flex-row justify-between py-2 gap-2">
+        <span class="text-purple-400 font-bold">index.html</span>
+        <span class="text-slate-300 font-sans text-xs">Semantic responsive DOM structure with radial AQI dial, profile selector, health advisory card, pollutant breakdown, and simulation studio.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Devpost Learn Planning Verification -->
+  <section class="space-y-4">
+    <h2 class="text-xl font-bold text-slate-100 flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+      <span>3. Devpost Learn Planning Verification</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+      <div class="glass p-4 rounded-xl">
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-bold text-white">devpost/scope.md</span>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono">Approved</span>
+        </div>
+        <p class="text-slate-400 leading-relaxed">
+          Establishes the core kernel: turning passive weather indicators into proactive personal health protection.
+        </p>
+      </div>
+
+      <div class="glass p-4 rounded-xl">
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-bold text-white">devpost/prd.md</span>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono">Approved</span>
+        </div>
+        <p class="text-slate-400 leading-relaxed">
+          Defines user journey, visual language, WHO pollutant threshold rules, and simulation states.
+        </p>
+      </div>
+
+      <div class="glass p-4 rounded-xl">
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-bold text-white">devpost/spec.md</span>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono">Approved</span>
+        </div>
+        <p class="text-slate-400 leading-relaxed">
+          Technical specifications for client-side execution, data schema, zero-dependency hosting, and component architecture.
+        </p>
+      </div>
+
+      <div class="glass p-4 rounded-xl">
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-bold text-white">devpost/checklist.md</span>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono">Approved</span>
+        </div>
+        <p class="text-slate-400 leading-relaxed">
+          Tracks the 5 incremental build slices, verification criteria, and git commits.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
