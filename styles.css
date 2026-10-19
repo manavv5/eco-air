@@ -2,8 +2,8 @@
 
 :root {
   --bg-primary: #0a0f1d;
-  --bg-card: rgba(18, 26, 47, 0.72);
-  --bg-card-hover: rgba(26, 38, 68, 0.85);
+  --bg-card: rgba(18, 26, 47, 0.75);
+  --bg-card-hover: rgba(26, 38, 68, 0.88);
   --border-subtle: rgba(255, 255, 255, 0.08);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
@@ -12,7 +12,7 @@
   /* Dynamic atmospheric theme colors (Default: Clean Emerald) */
   --theme-accent: #10b981;
   --theme-glow: rgba(16, 185, 129, 0.25);
-  --theme-bg-gradient: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.18) 0%, rgba(10, 15, 29, 0.95) 75%);
+  --theme-bg-gradient: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.18) 0%, rgba(10, 15, 29, 0.98) 75%);
   --theme-badge-bg: rgba(16, 185, 129, 0.15);
   --theme-badge-text: #34d399;
   
@@ -23,7 +23,7 @@
   --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Atmospheric State Shifts */
+/* Atmospheric State Shifts (US EPA AQI Standard) */
 body.theme-good {
   --theme-accent: #10b981;
   --theme-glow: rgba(16, 185, 129, 0.22);
@@ -48,12 +48,39 @@ body.theme-sensitive {
   --theme-badge-text: #fdba74;
 }
 
-body.theme-hazardous {
+body.theme-unhealthy {
   --theme-accent: #ef4444;
-  --theme-glow: rgba(239, 68, 68, 0.28);
-  --theme-bg-gradient: radial-gradient(circle at 50% -10%, rgba(239, 68, 68, 0.26) 0%, rgba(10, 15, 29, 1) 70%);
+  --theme-glow: rgba(239, 68, 68, 0.26);
+  --theme-bg-gradient: radial-gradient(circle at 50% -10%, rgba(239, 68, 68, 0.24) 0%, rgba(10, 15, 29, 1) 70%);
   --theme-badge-bg: rgba(239, 68, 68, 0.18);
   --theme-badge-text: #fca5a5;
+}
+
+body.theme-very-unhealthy {
+  --theme-accent: #a855f7;
+  --theme-glow: rgba(168, 85, 247, 0.28);
+  --theme-bg-gradient: radial-gradient(circle at 50% -10%, rgba(168, 85, 247, 0.25) 0%, rgba(10, 15, 29, 1) 70%);
+  --theme-badge-bg: rgba(168, 85, 247, 0.18);
+  --theme-badge-text: #d8b4fe;
+}
+
+body.theme-hazardous {
+  --theme-accent: #f43f5e;
+  --theme-glow: rgba(244, 63, 94, 0.32);
+  --theme-bg-gradient: radial-gradient(circle at 50% -10%, rgba(244, 63, 94, 0.30) 0%, rgba(10, 15, 29, 1) 70%);
+  --theme-badge-bg: rgba(244, 63, 94, 0.22);
+  --theme-badge-text: #fda4af;
+}
+
+/* High Contrast Accessibility Mode */
+body.high-contrast {
+  --bg-primary: #000000;
+  --bg-card: #0d1117;
+  --border-subtle: #ffffff;
+  --text-main: #ffffff;
+  --text-muted: #e2e8f0;
+  --text-subtle: #cbd5e1;
+  filter: contrast(115%);
 }
 
 * {
@@ -86,13 +113,7 @@ body {
 }
 
 .glass-panel:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-/* Atmospheric Glow Highlights */
-.glow-border {
-  border-color: var(--theme-accent) !important;
-  box-shadow: 0 0 24px var(--theme-glow);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 /* Dynamic Badge */
@@ -232,21 +253,57 @@ body {
   border-color: rgba(16, 185, 129, 0.4);
 }
 
-/* Smooth Scroll and Utility */
-html {
-  scroll-behavior: smooth;
+/* Leaflet Map Customization */
+#route-map {
+  height: 280px;
+  width: 100%;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  z-index: 10;
 }
 
-::-webkit-scrollbar {
-  width: 8px;
+.leaflet-container {
+  background: #0f172a !important;
 }
-::-webkit-scrollbar-track {
-  background: #0a0f1d;
+
+/* Forecast Heatmap Bar */
+.forecast-strip {
+  display: flex;
+  overflow-x: auto;
+  gap: 4px;
+  padding: 6px 0;
 }
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
+
+.forecast-hour-block {
+  min-width: 44px;
+  flex: 1;
+  padding: 8px 4px;
+  border-radius: 8px;
+  text-align: center;
+  transition: var(--transition-smooth);
 }
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+
+.forecast-hour-block.optimal-window {
+  border: 2px solid #10b981;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+}
+
+/* AI Chat Box */
+.ai-chat-bubble-user {
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #f0fdf4;
+  border-radius: 14px 14px 2px 14px;
+}
+
+.ai-chat-bubble-bot {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: #f8fafc;
+  border-radius: 14px 14px 14px 2px;
+}
+
+/* Canvas Share Card */
+#share-canvas {
+  display: none;
 }

@@ -5,20 +5,19 @@
 
 ---
 
-## 🌟 Why EcoAir? (The Unique Kernel)
+## 🌟 Why EcoAir? (The Standout Differentiators)
 
 Most environmental applications stop at passive numbers: *"AQI is 115 (Moderate)"*. This leaves people uninformed about which specific pollutant is elevated, what it means for their specific biology, and how they should protect themselves.
 
-**EcoAir changes this dynamic**:
-1. **Hyperlocal Environmental Telemetry**: Instant breakdown of 5 core pollutants (PM2.5, PM10, NO2, O3, CO) evaluated against official World Health Organization (WHO) 24-hour clinical safety limits.
-2. **Personalized Health Vulnerability Engine**: Dynamic risk evaluation tailored to specific sensitivity profiles:
-   - **Asthma / Respiratory Sensitive**: Low particulate tolerance; triggers fast-acting bronchodilator reminders, N95/FFP2 respirator notices, and indoor HEPA air filtration alerts.
-   - **Outdoor Athlete / Runner**: Accounts for 8–10x increased minute-ventilation lung load; prescribes safe outdoor cardio duration and timing.
-   - **Child & Senior Caregiver**: Strict conservative thresholds protecting delicate pediatric airways and senior cardiovascular systems.
-   - **Daily Urban Commuter**: Analyzes street-canyon exhaust levels to guide transit choices.
-3. **Clean Commute Advisor**: Compares high-exposure arterial motorways against vegetative greenway park corridors, calculating exact micro-particulate inhalation savings (e.g., **-38% particulate load**).
-4. **Atmospheric Simulation Studio**: Allows instant on-camera simulation of environmental events (Wildfire Smoke Surge, Peak Traffic Inversion, Post-Rain Oceanic Scrub) demonstrating reactive state changes for demonstration and testing.
-5. **Dynamic Ambient Interface**: Zero generic AI styling. Features fluid glassmorphism where atmospheric color gradients automatically adjust to air severity (Clean Emerald, Moderate Amber, Hazardous Crimson).
+**EcoAir changes this dynamic with 8 standout pillars**:
+1. **Real AI Air Health Coach**: Interactive clinical AI coach powered by Google Gemini (with offline reasoning fallback) answering questions like *"Plan my day: 5 km run and 9 AM commute"* or *"Is it safe to open windows now?"*.
+2. **Real Live Telemetry via Open-Meteo**: Pulls live satellite & station telemetry for any city or via browser GPS (`navigator.geolocation`) with zero paid API keys needed, retaining offline presets as fallback.
+3. **24-Hour Forecast & Heatmap**: Analyzes hourly atmospheric predictions to automatically detect and prescribe the single **Best 1-Hour Activity Window** for the user's specific persona.
+4. **Real Map-Based Clean Route (Leaflet + OpenStreetMap)**: Side-by-side interactive routing comparing high-pollution arterial boulevards vs tree-lined greenway corridors, calculating microgram particulate savings (**-38% inhaled dose**).
+5. **DIY Hardware Sensor Node (ESP32 + Plantower PMS5003)**: Includes ready-to-flash Arduino firmware in [`hardware/esp32_air_node.ino`](hardware/esp32_air_node.ino) allowing demoers to showcase an actual physical laser sensor on their table against city station data.
+6. **Clinically Cited Health Personas**: Dynamic risk assessment for Asthma, Outdoor Athletes, Caregivers, and Commuters with citations from WHO 2021, GINA 2023, and the American Thoracic Society.
+7. **Personal Clean-Air Streaks & Inhaled Dose**: Tracks daily inhaled PM2.5 in micrograms and awards consecutive low-exposure streak badges.
+8. **Accessibility & Multilingual Voice Readout**: Multilingual support (English, Hindi, Gujarati), Web Speech API audio narration, high-contrast mode, and PWA mobile installation.
 
 ---
 
@@ -33,13 +32,13 @@ git clone https://github.com/YOUR_USERNAME/eco-air.git
 cd eco-air
 
 # Option A: Open directly in your browser
-open index.html # On macOS
 start index.html # On Windows
+open index.html  # On macOS
 
 # Option B: Run via any lightweight static server
 npx serve .
 # or
-python -m http.server 3000
+python -m http.server 8080
 ```
 
 ---
@@ -58,17 +57,5 @@ Following the official **Devpost Learn 6-Step Curriculum**:
 
 ---
 
-## 🔬 Tech Stack
-- **Frontend Architecture**: Semantic HTML5, CSS3 Glassmorphism, Tailwind CSS (CDN).
-- **Interactive Gauges**: Pure SVG stroke-dashoffset vector mathematics.
-- **State & Logic**: Pure modular Vanilla JavaScript (ES6+), Web Storage API (`localStorage`).
-- **Icons**: Handcrafted clean SVG vector icons.
-
----
-
-## 🏆 Hackathon Submission Checklist
-- [x] Functional proof-of-concept runnable with zero setup friction.
-- [x] Comprehensive Devpost Learn planning artifacts in `/devpost`.
-- [x] Public GitHub repository with clean commit history.
-- [x] Demo video recording walkthrough ready for submission.
-- [x] Human-authored Devpost submission Q&A.
+## 🔌 Hardware Sensor Node (ESP32 + PMS5003)
+See [`hardware/README.md`](hardware/README.md) and [`hardware/esp32_air_node.ino`](hardware/esp32_air_node.ino) for the full wiring schematic, BOM, and Arduino source code.

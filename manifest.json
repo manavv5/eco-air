@@ -1,0 +1,21 @@
+{
+  "name": "EcoAir — Intelligent Clean-Air Companion",
+  "short_name": "EcoAir",
+  "description": "Hyperlocal atmospheric intelligence that translates raw air quality data into personalized health protection and proactive eco-actions.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0a0f1d",
+  "theme_color": "#10b981",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3222/3222800.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3222/3222800.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
