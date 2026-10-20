@@ -31,7 +31,9 @@ const state = {
   transportMode: "cycling",
   currentLang: "en",
   highContrast: false,
-  isDarkMode: false,
+  isDarkMode: true, // Default to Dark Theme
+  mapProvider: localStorage.getItem("ecoair_map_provider") || "openfreemap-liberty", // openfreemap-* | custom
+  customMapUrl: localStorage.getItem("ecoair_custom_map_url") || "",
   isHardwareNodeActive: false,
   hardwareTelemetry: { pm25: 14.2, pm10: 24.0, aqi: 54, temp: 24.5, hum: 52 },
   exposureStreak: 3,
@@ -76,6 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initUrbanSimulator();
   initInterventionsList();
   initDemoTour();
+  initMapSettings();
   initMap();
 
   // Load Initial Telemetry
@@ -91,12 +94,32 @@ function loadSavedState() {
   const savedProfile = localStorage.getItem("ecoair_profile");
   const savedLang = localStorage.getItem("ecoair_lang");
   const savedTheme = localStorage.getItem("ecoair_theme");
+  const savedMapProvider = localStorage.getItem("ecoair_map_provider");
+  const savedCustomMapUrl = localStorage.getItem("ecoair_custom_map_url");
 
   if (savedCity && CITY_COORDINATES[savedCity]) state.currentCity = savedCity;
   if (savedProfile && PROFILES[savedProfile]) state.activeProfile = savedProfile;
   if (savedLang && TRANSLATIONS[savedLang]) state.currentLang = savedLang;
-  if (savedTheme === "dark") {
+  const supportedMapProviders = ["openfreemap-dark", "openfreemap-liberty", "openfreemap-bright", "openfreemap-positron", "custom"];
+  const mapStylePreferenceVersion = localStorage.getItem("ecoair_map_style_preference_version");
+  if (mapStylePreferenceVersion !== "1") {
+    state.mapProvider = savedMapProvider === "custom" ? "custom" : "openfreemap-liberty";
+    localStorage.setItem("ecoair_map_provider", state.mapProvider);
+    localStorage.setItem("ecoair_map_style_preference_version", "1");
+  } else if (savedMapProvider) {
+    state.mapProvider = supportedMapProviders.includes(savedMapProvider) ? savedMapProvider : "openfreemap-liberty";
+    if (state.mapProvider !== savedMapProvider) localStorage.setItem("ecoair_map_provider", state.mapProvider);
+  }
+  if (savedCustomMapUrl) state.customMapUrl = savedCustomMapUrl;
+
+  // Default to Dark theme unless explicitly set to "light" or "nature"
+  if (savedTheme === "light" || savedTheme === "nature") {
+    state.isDarkMode = false;
+    document.documentElement.classList.remove("dark");
+    document.body.classList.remove("theme-dark");
+  } else {
     state.isDarkMode = true;
+    document.documentElement.classList.add("dark");
     document.body.classList.add("theme-dark");
   }
 }
@@ -126,6 +149,7 @@ function initViewModeSwitcher() {
     urbanBtn.classList.add("text-slate-600");
     if (citizenSection) citizenSection.classList.remove("hidden");
     if (urbanSection) urbanSection.classList.add("hidden");
+    setTimeout(() => { if (routeMap) routeMap.invalidateSize(); }, 200);
   });
 
   urbanBtn.addEventListener("click", () => {
@@ -139,6 +163,7 @@ function initViewModeSwitcher() {
     renderSourceAttribution();
     renderMultiHorizonForecast();
     calculateSimulatorImpact();
+    setTimeout(() => { if (routeMap) routeMap.invalidateSize(); }, 200);
   });
 }
 
@@ -271,11 +296,14 @@ function applyTranslations() {
 function initAccessibility() {
   const themeToggle = document.getElementById("theme-toggle-btn");
   if (themeToggle) {
+    themeToggle.textContent = state.isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode";
     themeToggle.addEventListener("click", () => {
       state.isDarkMode = !state.isDarkMode;
+      document.documentElement.classList.toggle("dark", state.isDarkMode);
       document.body.classList.toggle("theme-dark", state.isDarkMode);
-      localStorage.setItem("ecoair_theme", state.isDarkMode ? "dark" : "nature");
-      themeToggle.textContent = state.isDarkMode ? "🌿 Nature Palette" : "🌌 Dark Mode";
+      localStorage.setItem("ecoair_theme", state.isDarkMode ? "dark" : "light");
+      themeToggle.textContent = state.isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode";
+      updateMapTileLayer();
     });
   }
 
@@ -1007,26 +1035,122 @@ function renderPollutants() {
 }
 
 // Leaflet Map & GIS Hotspots
+let currentTileLayer = null;
+
+function updateMapTileLayer() {
+  if (!routeMap) return;
+  if (currentTileLayer) {
+    try { routeMap.removeLayer(currentTileLayer); } catch(e){}
+    currentTileLayer = null;
+  }
+
+  const styleNames = {
+    "openfreemap-dark": "dark",
+    "openfreemap-liberty": "liberty",
+    "openfreemap-bright": "bright",
+    "openfreemap-positron": "positron"
+  };
+  const badge = document.getElementById("map-provider-badge");
+
+  if (state.mapProvider === "custom" && state.customMapUrl) {
+    currentTileLayer = L.tileLayer(state.customMapUrl, {
+      maxZoom: 19,
+      attribution: "Custom tile provider"
+    }).addTo(routeMap);
+    if (badge) badge.textContent = "Custom Map Active";
+  } else {
+    const styleName = styleNames[state.mapProvider] || "liberty";
+    const styleUrl = `https://tiles.openfreemap.org/styles/${styleName}`;
+    if (typeof L.maplibreGL !== "function") {
+      console.error("MapLibre GL Leaflet adapter did not load; OpenFreeMap could not be initialized.");
+      if (badge) badge.textContent = "Map library unavailable";
+      return;
+    }
+    currentTileLayer = L.maplibreGL({
+      style: styleUrl,
+      attribution: '&copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> · Data from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(routeMap);
+    if (badge) badge.textContent = `OpenFreeMap ${styleName} Active`;
+  }
+
+  setTimeout(() => {
+    if (routeMap) routeMap.invalidateSize();
+  }, 250);
+}
+function initMapSettings() {
+  const modal = document.getElementById("map-settings-modal");
+  const openBtn = document.getElementById("open-map-settings-btn");
+  const closeBtn = document.getElementById("close-map-settings-btn");
+  const saveBtn = document.getElementById("save-map-settings-btn");
+  const select = document.getElementById("map-tile-provider-select");
+  const customBox = document.getElementById("custom-map-key-box");
+  const customInput = document.getElementById("custom-tile-url-input");
+
+  if (!modal || !openBtn) return;
+
+  if (select) {
+    select.value = state.mapProvider || "openfreemap-liberty";
+    if (select.value === "custom" && customBox) customBox.classList.remove("hidden");
+    select.addEventListener("change", (e) => {
+      if (customBox) {
+        if (e.target.value === "custom") customBox.classList.remove("hidden");
+        else customBox.classList.add("hidden");
+      }
+    });
+  }
+
+  if (customInput && state.customMapUrl) {
+    customInput.value = state.customMapUrl;
+  }
+
+  openBtn.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      modal.classList.add("hidden");
+    });
+  }
+
+  if (saveBtn) {
+    saveBtn.addEventListener("click", () => {
+      state.mapProvider = select.value;
+      if (state.mapProvider === "custom" && customInput) {
+        state.customMapUrl = customInput.value.trim();
+        localStorage.setItem("ecoair_custom_map_url", state.customMapUrl);
+      }
+      localStorage.setItem("ecoair_map_provider", state.mapProvider);
+      updateMapTileLayer();
+      modal.classList.add("hidden");
+    });
+  }
+}
+
 function initMap() {
   const mapEl = document.getElementById("route-map");
   if (!mapEl || typeof L === "undefined") return;
 
   try {
+    if (routeMap) {
+      try { routeMap.remove(); } catch(e){}
+      routeMap = null;
+    }
+
     routeMap = L.map("route-map", {
-      attributionControl: false,
-      zoomControl: false
+      attributionControl: true,
+      zoomControl: true
     }).setView([state.lat, state.lon], 13);
 
-    // Natural clean map tiles
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      maxZoom: 19
-    }).addTo(routeMap);
+    // Apply active OpenFreeMap vector style (no key required)
+    updateMapTileLayer();
 
     // Draw CAAQMS stations as markers
+    stationMarkers = [];
     CAAQMS_STATIONS.forEach(s => {
       const circle = L.circleMarker([s.lat, s.lon], {
         radius: s.isHotspot ? 14 : 9,
-        fillColor: s.isHotspot ? '#c85c52' : '#2f6b4f',
+        fillColor: s.isHotspot ? '#c85c52' : '#10b981',
         color: '#ffffff',
         weight: 2,
         opacity: 1,
@@ -1045,6 +1169,10 @@ function initMap() {
     });
 
     drawSampleRoutes(state.lat, state.lon);
+
+    setTimeout(() => {
+      if (routeMap) routeMap.invalidateSize();
+    }, 300);
   } catch (e) {
     console.warn("Leaflet map initialization skipped:", e);
   }
@@ -1054,6 +1182,9 @@ function updateMapLocation(lat, lon) {
   if (!routeMap) return;
   routeMap.setView([lat, lon], 13);
   drawSampleRoutes(lat, lon);
+  setTimeout(() => {
+    if (routeMap) routeMap.invalidateSize();
+  }, 200);
 }
 
 function drawSampleRoutes(lat, lon) {
@@ -1076,14 +1207,14 @@ function drawSampleRoutes(lat, lon) {
   ];
 
   arterialPolyline = L.polyline(arterialCoords, {
-    color: '#c85c52',
+    color: '#ef4444',
     weight: 4,
     opacity: 0.85,
     dashArray: '6, 6'
   }).addTo(routeMap).bindPopup("<b>Direct Arterial Boulevard</b><br>High Traffic & Particulates");
 
   greenwayPolyline = L.polyline(greenwayCoords, {
-    color: '#2f6b4f',
+    color: '#10b981',
     weight: 5,
     opacity: 0.95
   }).addTo(routeMap).bindPopup("<b>Greenway Park Corridor</b><br>-38% Inhaled Micro-Particulates");

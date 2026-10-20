@@ -1,28 +1,21 @@
-/* EcoAir v3.0 — AI Urban Air Intelligence Platform Design System */
+/* EcoAir v3.2 — AI Urban Air Intelligence Platform Design System */
 
 :root {
-  /* Nature & Clean Air Palette (Default Theme) */
-  --bg-primary: #f7faf5;
-  --bg-surface: #ffffff;
-  --bg-card: #ffffff;
-  --bg-card-hover: #f1f8f3;
-  --border-subtle: #e2ede5;
-  --text-main: #19342a;
-  --text-muted: #6d7f75;
-  --text-subtle: #8da195;
-  
-  --primary-pine: #2f6b4f;
-  --secondary-sage: #7faf8a;
-  --accent-mint: #ddefe3;
-  --accent-sky: #dceef2;
-  --color-warning: #d7a83e;
-  --color-danger: #c85c52;
+  /* Default: Atmospheric Dark Mode */
+  --bg-primary: #0a0f1d;
+  --bg-surface: #111a2e;
+  --bg-card: rgba(18, 26, 47, 0.88);
+  --bg-card-hover: rgba(26, 38, 68, 0.95);
+  --border-subtle: rgba(255, 255, 255, 0.10);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-subtle: #64748b;
 
-  --theme-accent: #2f6b4f;
-  --theme-glow: rgba(47, 107, 79, 0.20);
-  --theme-bg-gradient: linear-gradient(180deg, #f7faf5 0%, #eef5ed 100%);
-  --theme-badge-bg: #ddefe3;
-  --theme-badge-text: #2f6b4f;
+  --theme-accent: #10b981;
+  --theme-glow: rgba(16, 185, 129, 0.25);
+  --theme-bg-gradient: radial-gradient(circle at 50% -10%, rgba(16, 185, 129, 0.16) 0%, rgba(10, 15, 29, 1) 75%);
+  --theme-badge-bg: rgba(16, 185, 129, 0.15);
+  --theme-badge-text: #34d399;
 
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --radius-lg: 16px;
@@ -31,20 +24,45 @@
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Atmospheric Dark Mode (Toggleable) */
-body.theme-dark {
+/* Light / Nature Clean Air Theme Override */
+html:not(.dark), body:not(.theme-dark) {
+  --bg-primary: #f6faf6;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #edf6f0;
+  --border-subtle: #dbe7df;
+  --text-main: #142820;
+  --text-muted: #4e6357;
+  --text-subtle: #7a8e83;
+
+  --primary-pine: #23583f;
+  --secondary-sage: #5b8a6a;
+  --accent-mint: #ddefe3;
+  --accent-sky: #dceef2;
+  --color-warning: #b45309;
+  --color-danger: #b91c1c;
+
+  --theme-accent: #23583f;
+  --theme-glow: rgba(35, 88, 63, 0.15);
+  --theme-bg-gradient: linear-gradient(180deg, #f6faf6 0%, #eaf3ed 100%);
+  --theme-badge-bg: #ddefe3;
+  --theme-badge-text: #1d4d36;
+}
+
+/* Dark Mode Explicit Rules */
+html.dark, body.theme-dark {
   --bg-primary: #0a0f1d;
   --bg-surface: #111a2e;
-  --bg-card: rgba(18, 26, 47, 0.78);
-  --bg-card-hover: rgba(26, 38, 68, 0.88);
-  --border-subtle: rgba(255, 255, 255, 0.09);
+  --bg-card: rgba(18, 26, 47, 0.88);
+  --bg-card-hover: rgba(26, 38, 68, 0.95);
+  --border-subtle: rgba(255, 255, 255, 0.10);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-subtle: #64748b;
 
   --theme-accent: #10b981;
   --theme-glow: rgba(16, 185, 129, 0.25);
-  --theme-bg-gradient: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.16) 0%, rgba(10, 15, 29, 0.98) 75%);
+  --theme-bg-gradient: radial-gradient(circle at 50% -10%, rgba(16, 185, 129, 0.16) 0%, rgba(10, 15, 29, 1) 75%);
   --theme-badge-bg: rgba(16, 185, 129, 0.15);
   --theme-badge-text: #34d399;
 }
@@ -74,11 +92,11 @@ body {
   color: var(--text-main);
   min-height: 100vh;
   line-height: 1.5;
-  transition: background-color 0.4s ease, color 0.4s ease;
+  transition: background-color 0.35s ease, color 0.35s ease;
   overflow-x: hidden;
 }
 
-/* Clean Surface Cards */
+/* Unified Surface Cards */
 .eco-card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
@@ -88,17 +106,17 @@ body {
 }
 
 .eco-card:hover {
-  border-color: var(--secondary-sage);
-  box-shadow: 0 8px 24px -4px rgba(25, 52, 42, 0.08);
+  border-color: rgba(16, 185, 129, 0.35);
+  box-shadow: 0 8px 26px -4px rgba(0, 0, 0, 0.12);
 }
 
-body.theme-dark .eco-card {
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+html.dark .eco-card, body.theme-dark .eco-card {
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.38);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
 
-/* Dynamic Operational Loop Tabs (SEE -> UNDERSTAND -> PREDICT -> ACT -> MEASURE) */
+/* Operational Loop Tabs (SEE -> UNDERSTAND -> PREDICT -> ACT -> MEASURE) */
 .loop-tab {
   display: flex;
   align-items: center;
@@ -108,32 +126,36 @@ body.theme-dark .eco-card {
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-  background: rgba(47, 107, 79, 0.06);
+  background: rgba(255, 255, 255, 0.08);
   color: var(--text-muted);
-  border: 1px solid transparent;
+  border: 1px solid var(--border-subtle);
   cursor: pointer;
   transition: var(--transition-smooth);
+  white-space: nowrap;
 }
 
-body.theme-dark .loop-tab {
-  background: rgba(255, 255, 255, 0.04);
+html:not(.dark) .loop-tab {
+  background: #eef5ef;
+  color: #3b5043;
+  border-color: #d8e5dc;
 }
 
 .loop-tab:hover {
   color: var(--text-main);
-  background: rgba(47, 107, 79, 0.12);
+  background: rgba(16, 185, 129, 0.15);
 }
 
 .loop-tab.active {
-  background: var(--primary-pine);
-  color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(47, 107, 79, 0.25);
+  background: #10b981 !important;
+  color: #064e3b !important;
+  border-color: #10b981 !important;
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.35);
 }
 
-body.theme-dark .loop-tab.active {
-  background: #10b981;
-  color: #064e3b !important;
-  box-shadow: 0 0 16px rgba(16, 185, 129, 0.35);
+html:not(.dark) .loop-tab.active {
+  background: #23583f !important;
+  color: #ffffff !important;
+  border-color: #23583f !important;
 }
 
 /* Status Badge */
@@ -147,7 +169,11 @@ body.theme-dark .loop-tab.active {
   font-weight: 700;
   background: var(--theme-badge-bg);
   color: var(--theme-badge-text);
-  border: 1px solid rgba(47, 107, 79, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+html:not(.dark) .status-badge {
+  border-color: rgba(35, 88, 63, 0.2);
 }
 
 .pulse-dot {
@@ -167,12 +193,12 @@ body.theme-dark .loop-tab.active {
 /* Radial Gauge Styling */
 .gauge-circle-bg {
   fill: none;
-  stroke: rgba(47, 107, 79, 0.10);
+  stroke: rgba(255, 255, 255, 0.08);
   stroke-width: 14;
 }
 
-body.theme-dark .gauge-circle-bg {
-  stroke: rgba(255, 255, 255, 0.08);
+html:not(.dark) .gauge-circle-bg {
+  stroke: #e2ede5;
 }
 
 .gauge-circle-progress {
@@ -183,6 +209,7 @@ body.theme-dark .gauge-circle-bg {
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
   transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.6s ease;
+  filter: drop-shadow(0 0 8px var(--theme-glow));
 }
 
 /* Profile Selector Cards */
@@ -190,9 +217,9 @@ body.theme-dark .gauge-circle-bg {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 9px 14px;
+  padding: 10px 14px;
   border-radius: var(--radius-md);
-  background: rgba(47, 107, 79, 0.05);
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   color: var(--text-muted);
   cursor: pointer;
@@ -200,36 +227,37 @@ body.theme-dark .gauge-circle-bg {
 }
 
 .profile-pill:hover {
-  background: rgba(47, 107, 79, 0.10);
+  background: var(--bg-card-hover);
   color: var(--text-main);
   transform: translateY(-1px);
 }
 
 .profile-pill.active {
-  background: var(--accent-mint);
-  border-color: var(--primary-pine);
-  color: var(--primary-pine);
+  background: rgba(16, 185, 129, 0.18) !important;
+  border-color: #10b981 !important;
+  color: #34d399 !important;
   font-weight: 700;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.25);
 }
 
-body.theme-dark .profile-pill.active {
-  background: rgba(16, 185, 129, 0.18);
-  border-color: #10b981;
-  color: #34d399;
+html:not(.dark) .profile-pill.active {
+  background: #ddefe3 !important;
+  border-color: #23583f !important;
+  color: #1d4d36 !important;
 }
 
 /* WHO Progress Track */
 .who-progress-track {
   width: 100%;
   height: 6px;
-  background: rgba(47, 107, 79, 0.08);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 9999px;
   overflow: hidden;
   position: relative;
 }
 
-body.theme-dark .who-progress-track {
-  background: rgba(255, 255, 255, 0.08);
+html:not(.dark) .who-progress-track {
+  background: #e2ede5;
 }
 
 .who-progress-fill {
@@ -240,29 +268,60 @@ body.theme-dark .who-progress-track {
 }
 
 .who-progress-fill.exceeded {
-  background: var(--color-danger) !important;
+  background: #ef4444 !important;
 }
 
 /* Leaflet Map */
 #route-map {
-  height: 320px;
+  height: 340px;
   width: 100%;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
   z-index: 10;
+  background: #0f172a;
+}
+
+html:not(.dark) #route-map {
+  background: #f1f5f9;
 }
 
 /* Interactive Slider */
 input[type="range"] {
-  accent-color: var(--primary-pine);
+  accent-color: #10b981;
+}
+
+html:not(.dark) input[type="range"] {
+  accent-color: #23583f;
 }
 
 /* 9-Step Demo Walkthrough Banner */
 .tour-banner {
-  background: linear-gradient(135deg, #2f6b4f 0%, #1d4633 100%);
+  background: linear-gradient(135deg, #134e4a 0%, #064e3b 100%);
   color: #ffffff;
   border-radius: var(--radius-lg);
-  box-shadow: 0 10px 25px -5px rgba(47, 107, 79, 0.3);
+  box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.5);
+}
+
+/* Forecast Heatmap Bar */
+.forecast-strip {
+  display: flex;
+  overflow-x: auto;
+  gap: 6px;
+  padding: 6px 0;
+}
+
+.forecast-hour-block {
+  min-width: 48px;
+  flex: 1;
+  padding: 8px 4px;
+  border-radius: 10px;
+  text-align: center;
+  transition: var(--transition-smooth);
+}
+
+.forecast-hour-block.optimal-window {
+  border: 2px solid #10b981 !important;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.4);
 }
 
 /* Custom Scrollbar */
@@ -274,9 +333,9 @@ input[type="range"] {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(47, 107, 79, 0.2);
+  background: rgba(148, 163, 184, 0.25);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(47, 107, 79, 0.4);
+  background: rgba(148, 163, 184, 0.45);
 }

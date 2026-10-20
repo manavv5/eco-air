@@ -103,12 +103,12 @@ const CAAQMS_STATIONS = [
 
 // Standard US EPA AQI Categories (Corrected Scale)
 const AQI_SCALE = [
-  { min: 0, max: 50, label: "Good", color: "#10b981", class: "theme-good", textClass: "text-emerald-500", bgClass: "bg-emerald-500/20" },
-  { min: 51, max: 100, label: "Moderate", color: "#f59e0b", class: "theme-moderate", textClass: "text-amber-500", bgClass: "bg-amber-500/20" },
-  { min: 101, max: 150, label: "Unhealthy for Sensitive Groups", color: "#f97316", class: "theme-sensitive", textClass: "text-orange-500", bgClass: "bg-orange-500/20" },
-  { min: 151, max: 200, label: "Unhealthy", color: "#ef4444", class: "theme-unhealthy", textClass: "text-red-500", bgClass: "bg-red-500/20" },
-  { min: 201, max: 300, label: "Very Unhealthy", color: "#a855f7", class: "theme-very-unhealthy", textClass: "text-purple-500", bgClass: "bg-purple-500/20" },
-  { min: 301, max: 500, label: "Hazardous", color: "#881337", class: "theme-hazardous", textClass: "text-rose-600", bgClass: "bg-rose-950/40" }
+  { min: 0, max: 50, label: "Good", color: "#10b981", class: "theme-good", textClass: "text-emerald-700 dark:text-emerald-400", bgClass: "bg-emerald-100 dark:bg-emerald-500/20" },
+  { min: 51, max: 100, label: "Moderate", color: "#f59e0b", class: "theme-moderate", textClass: "text-amber-700 dark:text-amber-400", bgClass: "bg-amber-100 dark:bg-amber-500/20" },
+  { min: 101, max: 150, label: "Unhealthy for Sensitive Groups", color: "#f97316", class: "theme-sensitive", textClass: "text-orange-700 dark:text-orange-400", bgClass: "bg-orange-100 dark:bg-orange-500/20" },
+  { min: 151, max: 200, label: "Unhealthy", color: "#ef4444", class: "theme-unhealthy", textClass: "text-rose-700 dark:text-rose-400", bgClass: "bg-rose-100 dark:bg-red-500/20" },
+  { min: 201, max: 300, label: "Very Unhealthy", color: "#a855f7", class: "theme-very-unhealthy", textClass: "text-purple-700 dark:text-purple-400", bgClass: "bg-purple-100 dark:bg-purple-500/20" },
+  { min: 301, max: 500, label: "Hazardous", color: "#881337", class: "theme-hazardous", textClass: "text-rose-900 dark:text-rose-400", bgClass: "bg-rose-200 dark:bg-rose-950/40" }
 ];
 
 // Explainable AI: Source Attribution Breakdown Model
